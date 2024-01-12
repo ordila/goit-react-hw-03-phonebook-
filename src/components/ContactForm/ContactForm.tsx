@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { ContactProps } from './ContactForm.types';
-import { INITIAL_STATE } from '../../constants/initialStateForm';
+import { INITIAL_STATE } from '../../constants/initialStateForm/initialStateForm';
 
 export default class ContactForm extends Component<ContactProps> {
   state = { ...INITIAL_STATE };

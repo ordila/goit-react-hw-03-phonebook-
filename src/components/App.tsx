@@ -4,6 +4,12 @@ import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 import { ContactSingle } from './ContactForm/ContactForm.types';
 import users from '../data/users.json';
+import { localStorageService } from '../helpers/storage/storage.helpers';
+import { LOCAL_STORAGE_KEYS } from '../constants/storage/localStorageKeys.constants';
+
+const userService = localStorageService<ContactSingle[]>(
+  LOCAL_STORAGE_KEYS.USERS
+);
 
 interface State {
   contacts: ContactSingle[];
@@ -47,6 +53,21 @@ export class App extends Component<{}, State> {
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
+
+  componentDidMount() {
+    if (localStorage) {
+      const data = userService.getItem();
+      if (data) {
+        this.setState({ contacts: data });
+      }
+    }
+  }
+
+  componentDidUpdate(_: {}, prevState: State) {
+    if (localStorage && prevState.contacts !== this.state.contacts) {
+      userService.setItem(this.state.contacts);
+    }
+  }
 
   render() {
     return (
